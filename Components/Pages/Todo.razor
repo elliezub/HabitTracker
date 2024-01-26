@@ -1,5 +1,7 @@
 ﻿@page "/todo";
 @rendermode InteractiveServer
+@using HabitTracker.Data
+@inject ApplicationDbContext dbContext
 
 <PageTitle>Todo</PageTitle>
 
@@ -26,7 +28,11 @@
 
 	private void AddTodo()
 	{
-		todos.Add(new TodoItem { Title = newTodo });
+		var todoItem = new TodoItem { Title = newTodo };
+		dbContext.TodoItems.Add(todoItem); // Add to Db
+		dbContext.SaveChanges(); // Save changes to the database
+
+		todos.Add(todoItem); // Add to the in-memory list
 		newTodo = string.Empty;
 	}
 }
